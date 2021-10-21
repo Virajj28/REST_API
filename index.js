@@ -1,15 +1,22 @@
 const express = require('express');
 const app = express();
+const dotenv = require('dotenv');
 const mongoose = require('mongoose');
-
-// Connect to MongoDB
-mongoose.connect('mongodb+srv://nervebody:nervebody28@cluster0.w22uk.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
-  () =>
-    console.log('Connected to MongoDB Atlas!')
-  )
 
 // Import Routes
 const authRoute = require('./routes/auth');
+
+dotenv.config();
+
+// Connect to MongoDB
+mongoose.connect(process.env.DB_CONNECT, { useNewUrlParser: true},
+() =>
+    console.log('Connected to MongoDB Atlas!')
+  )
+
+// Middleware
+app.use(express.json());
+
 
 // Routes Middleware
 app.use('/api/user', authRoute);
